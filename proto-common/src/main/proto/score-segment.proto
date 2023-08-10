@@ -5,7 +5,7 @@ import "google/protobuf/timestamp.proto";
 
 package scoresegment;
 
-option java_package = "com.nils.gprc.scoresegment";
+option java_package = "com.trading.home.scoresegment";
 option java_multiple_files = true;
 
 message ScoreSegmentRequest {
