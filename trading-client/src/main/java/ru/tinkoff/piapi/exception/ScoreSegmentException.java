@@ -1,4 +1,4 @@
-package com.trading.home.exception;
+package ru.tinkoff.piapi.exception;
 
 import com.trading.home.scoresegment.ScoreSegmentErrorCode;
 import lombok.Getter;

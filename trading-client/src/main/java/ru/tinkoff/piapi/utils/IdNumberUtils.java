@@ -1,4 +1,4 @@
-package com.trading.home.utils;
+package ru.tinkoff.piapi.utils;
 
 public class IdNumberUtils {
 
