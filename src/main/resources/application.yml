@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: trading
+
+tinkoff:
+  rest:
+    basePath: ${TINKOFF_API_HOST}
+    token: ${TINKOFF_TOKEN}
+    max-total-conn: 100
+    default-max-conn-per-route: 20
+    conn-request-timeout-millis: 20000
+    socket-timeout-millis: 20000
+    conn-timeout-millis: 20000
+
+
+
