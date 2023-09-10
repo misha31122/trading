@@ -32,7 +32,7 @@ public class TinkoffApiConfig {
   private final TinkoffApiProperty tinkoffApiProperty;
 
   @Bean("tinkoffApiRestTemplate")
-  public RestTemplate epaRestTemplate() {
+  public RestTemplate tinkoffApiRestTemplate() {
     RestTemplate restTemplate = prepareBaseRestTemplate();
     return restTemplate;
   }
