@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.6.13</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+  <groupId>com.trading.home</groupId>
+  <artifactId>trading</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>trading</name>
+  <description>trading bot service</description>
+
+  <properties>
+    <java.version>11</java.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <openapi-generator-maven-plugin.version>6.5.0</openapi-generator-maven-plugin.version>
+    <springdoc-openapi-ui.version>1.7.0</springdoc-openapi-ui.version>
+    <jackson-databind-nullable.version>0.2.1</jackson-databind-nullable.version>
+    <javax.annotation.version>1.3.2</javax.annotation.version>
+    <com.google.code.findbugs.version>3.0.2</com.google.code.findbugs.version>
+    <apache.httpclient.version>4.5</apache.httpclient.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- for open api files compilation. start -->
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-ui</artifactId>
+      <version>${springdoc-openapi-ui.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>${com.google.code.findbugs.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openapitools</groupId>
+      <artifactId>jackson-databind-nullable</artifactId>
+      <version>${jackson-databind-nullable.version}</version>
+    </dependency>
+
+    <dependency>
+      <artifactId>javax.annotation-api</artifactId>
+      <groupId>javax.annotation</groupId>
+      <version>${javax.annotation.version}</version>
+    </dependency>
+
+    <!-- for open api files compilation. end -->
+
+    <dependency>
+      <artifactId>httpclient</artifactId>
+      <groupId>org.apache.httpcomponents</groupId>
+      <version>${apache.httpclient.version}</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <scope>runtime</scope>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.hamcrest</groupId>
+          <artifactId>hamcrest-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>${openapi-generator-maven-plugin.version}</version>
+        <executions>
+          <execution>
+        <id>tinkoff-invest-api</id>
+        <goals>
+          <goal>generate</goal>
+        </goals>
+        <configuration>
+          <inputSpec>${project.basedir}/src/main/resources/openapi/tinkoffOpenApi.yaml
+          </inputSpec>
+          <generatorName>java</generatorName>
+          <generateModelTests>false</generateModelTests>
+          <generateApiTests>false</generateApiTests>
+          <library>resttemplate</library>
+          <configOptions>
+            <apiPackage>ru.tinkoff.trade.invest.api</apiPackage>
+            <modelPackage>ru.tinkoff.trade.invest.dto</modelPackage>
+            <sourceFolder>src/gen/java/main</sourceFolder>
+            <java8>true</java8>
+            <dateLibrary>java8</dateLibrary>
+            <useTags>true</useTags>
+            <interfaceOnly>false</interfaceOnly>
+            <delegatePattern>true</delegatePattern>
+          </configOptions>
+        </configuration>
+      </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
