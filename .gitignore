@@ -34,6 +34,6 @@ HELP.md
 target/
 .idea/
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+!src/main/**/target/
+!src/test/**/target/
 !setting.xml
