@@ -2,8 +2,8 @@ package ru.tinkoff.trade.integration;
 
 import static ru.tinkoff.trade.invest.dto.V1InstrumentStatus.BASE;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.Test;
@@ -14,7 +14,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.tinkoff.trade.invest.api.InstrumentsServiceApi;
 import ru.tinkoff.trade.invest.dto.V1InstrumentsRequest;
+import ru.tinkoff.trade.invest.dto.V1RealExchange;
 import ru.tinkoff.trade.invest.dto.V1Share;
+import ru.tinkoff.trade.invest.dto.V1ShareType;
 import ru.tinkoff.trade.invest.dto.V1SharesResponse;
 
 @RunWith(SpringRunner.class)
@@ -29,14 +31,17 @@ public class InstrumentsServiceTest {
   public void getStockList() {
     V1InstrumentsRequest request = new V1InstrumentsRequest().instrumentStatus(BASE);
     V1SharesResponse response = instrumentsServiceApi.instrumentsServiceShares(request);
-    List<V1Share> instruments = response.getInstruments();
-    List<String> moscowStockExchengeTypes = Arrays.asList("MOEX_PLUS",
-        "MOEX", "MOEX_WEEKEND", "MOEX_EVENING_WEEKEND");
-    List<V1Share> moexInstruments = instruments.stream()
-        .filter(instrument -> moscowStockExchengeTypes.contains(instrument.getExchange()))
-        .filter(instrument -> Boolean.FALSE.equals(instrument.getForQualInvestorFlag()))
-        .collect(Collectors.toList());
-    moexInstruments.size();
+
+    Set<V1Share> russiansShares = Optional.ofNullable(response)
+            .map(V1SharesResponse::getInstruments)
+            .map(instrumentList -> instrumentList.stream()
+            .filter(instrument -> V1RealExchange.MOEX.equals(instrument.getRealExchange()))
+            .filter(instrument -> "RU".equalsIgnoreCase(instrument.getCountryOfRisk()))
+            .filter(instrument-> V1ShareType.COMMON.equals(instrument.getShareType())
+                    || V1ShareType.PREFERRED.equals(instrument.getShareType()))
+            .collect(Collectors.toSet())).orElse(new HashSet<>());
+
+
   }
 
 }

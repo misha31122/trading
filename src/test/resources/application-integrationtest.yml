@@ -1,2 +1,8 @@
 TINKOFF_API_HOST: https://invest-public-api.tinkoff.ru/rest
 TINKOFF_TOKEN: t.Tpv95mz_tWo1L7la1KSBPVvw_gq7sMNCP6FGQ8uTPIk7_m_Xa85Bus1DZNXumsGOxBdveRqFOTuEs6NBkX1eSA
+PGUSER: postgres
+PGPASSWORD: secret
+PGSERVER: localhost
+PGPORT: 5432
+PGDATABASE: trading
+PGSCHEMA: trading
