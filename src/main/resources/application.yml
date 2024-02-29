@@ -1,6 +1,27 @@
 spring:
   application:
     name: trading
+  datasource:
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
+    url: jdbc:postgresql://${PGSERVER}/${PGDATABASE}
+  jpa:
+    show-sql: true
+    database: postgresql
+    properties:
+      hibernate:
+        default_schema: ${PGSCHEMA}
+      org:
+        hibernate:
+          flushMode: COMMIT
+    open-in-view: false
+  liquibase:
+    enabled: true
+    liquibase-schema: ${PGSCHEMA}
+    password: ${PGPASSWORD}
+    user: ${PGUSER}
+    default-schema: ${PGSCHEMA}
+    change-log: 'classpath:/db/changelog/db.changelog-master.yaml'
 
 tinkoff:
   rest:
