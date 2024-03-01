@@ -2,6 +2,7 @@ package ru.tinkoff.trade.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.trade.domain.entity.Stock;
 import ru.tinkoff.trade.domain.repository.StockRepository;
@@ -43,6 +44,10 @@ public class StockServiceImpl implements StockService {
                         .filter(instrument -> "RU".equalsIgnoreCase(instrument.getCountryOfRisk()))
                         .filter(instrument -> V1ShareType.COMMON.equals(instrument.getShareType())
                                 || V1ShareType.PREFERRED.equals(instrument.getShareType()))
+                        .filter(instrument -> BooleanUtils.isTrue(instrument.getBuyAvailableFlag()))
+                        .filter(instrument -> BooleanUtils.isTrue(instrument.getSellAvailableFlag()))
+                        .filter(instrument -> BooleanUtils.isFalse(instrument.getForQualInvestorFlag()))
+                        .filter(instrument -> BooleanUtils.isTrue(instrument.getApiTradeAvailableFlag()))
                         .collect(Collectors.toSet()))
                 .orElse(new HashSet<>());
 
