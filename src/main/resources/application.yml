@@ -36,5 +36,8 @@ tinkoff:
     socket-timeout-millis: 20000
     conn-timeout-millis: 20000
 
+finance-marker:
+  basePath: ${FINANCE_MARKER_HOST}
+  api-key: ${FINANCE_MARKER_API_KEY}
 
 
