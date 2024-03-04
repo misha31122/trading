@@ -14,13 +14,11 @@ public interface SectorsInfoRepository extends JpaRepository<SectorsInfo, UUID> 
             "and si.industryGroupId = :industryGroupId " +
             "and si.industryId = :industryId " +
             "and si.sector = :sector " +
-            "and si.sectorId = :sectorId " +
-            "and si.subIndustryId = :subIndustryId ")
+            "and si.sectorId = :sectorId ")
     Optional<SectorsInfo> findSectorInfo(String industry,
                                         String industryGroup,
                                         Integer industryGroupId,
                                         Integer industryId,
                                         String sector,
-                                        Integer sectorId,
-                                        Integer subIndustryId);
+                                        Integer sectorId);
 }

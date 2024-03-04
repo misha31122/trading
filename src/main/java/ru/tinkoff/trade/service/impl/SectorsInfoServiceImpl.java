@@ -47,8 +47,7 @@ public class SectorsInfoServiceImpl implements SectorsInfoService {
                                 sectorsInfo.getIndustryGroupId(),
                                 sectorsInfo.getIndustryId(),
                                 sectorsInfo.getSector(),
-                                sectorsInfo.getSectorId(),
-                                sectorsInfo.getSubIndustryId())
+                                sectorsInfo.getSectorId())
                         .orElse(null);
 
                 if (sectorsInfoFromBd != null) {

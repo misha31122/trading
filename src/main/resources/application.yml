@@ -26,6 +26,14 @@ spring:
     default-schema: ${PGSCHEMA}
     change-log: 'classpath:/db/changelog/db.changelog-master.yaml'
 
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          client:
+            RestTemplate: DEBUG
+
 tinkoff:
   rest:
     basePath: ${TINKOFF_API_HOST}

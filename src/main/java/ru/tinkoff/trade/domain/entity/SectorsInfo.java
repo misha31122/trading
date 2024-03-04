@@ -46,9 +46,6 @@ public class SectorsInfo {
     @Column
     private Integer sectorId;
 
-    @Column
-    private Integer subIndustryId;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sectorsInfo")
     private Set<Stock> stocks = new HashSet<>();
 }

@@ -83,8 +83,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        -
-          ApiKeyAuth: {  }
+        - ApiKeyAuth: []
   '/fm/v2/bonds/{exchange}:{code}':
     get:
       tags:
@@ -136,8 +135,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        -
-          ApiKeyAuth: {  }
+        - ApiKeyAuth: []
   /fm/v2/calendar:
     get:
       tags:
@@ -202,8 +200,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        -
-          ApiKeyAuth: {  }
+        - ApiKeyAuth: []
   /fm/v2/disclosure:
     get:
       tags:
@@ -268,8 +265,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        -
-          ApiKeyAuth: {  }
+        - ApiKeyAuth: []
   /fm/v2/dividends:
     get:
       tags:
@@ -350,8 +346,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        -
-          ApiKeyAuth: {  }
+        - ApiKeyAuth: []
   /fm/v2/etfs:
     get:
       tags:
@@ -422,8 +417,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        -
-          ApiKeyAuth: {  }
+        - ApiKeyAuth: []
   '/fm/v2/etfs/{exchange}:{code}':
     get:
       tags:
@@ -475,8 +469,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        -
-          ApiKeyAuth: {  }
+        - ApiKeyAuth: []
   /fm/v2/exchanges:
     get:
       tags:
@@ -510,8 +503,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        -
-          ApiKeyAuth: {  }
+        - ApiKeyAuth: []
   /fm/v2/experts:
     get:
       tags:
@@ -582,8 +574,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        -
-          ApiKeyAuth: {  }
+        - ApiKeyAuth: []
   /fm/v2/ideas:
     get:
       tags:
@@ -654,8 +645,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        -
-          ApiKeyAuth: {  }
+        - ApiKeyAuth: []
   '/fm/v2/ideas/{id}':
     get:
       tags:
@@ -695,8 +685,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        -
-          ApiKeyAuth: {  }
+        - ApiKeyAuth: []
   /fm/v2/ideas_aggregated:
     get:
       tags:
@@ -767,8 +756,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        -
-          ApiKeyAuth: {  }
+        - ApiKeyAuth: []
   /fm/v2/insider_transactions:
     get:
       tags:
@@ -839,8 +827,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        -
-          ApiKeyAuth: {  }
+        - ApiKeyAuth: []
   /fm/v2/insiders:
     get:
       tags:
@@ -905,8 +892,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        -
-          ApiKeyAuth: {  }
+        - ApiKeyAuth: []
   /fm/v2/stocks:
     get:
       tags:
@@ -977,8 +963,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        -
-          ApiKeyAuth: {  }
+        - ApiKeyAuth: []
   '/fm/v2/stocks/{exchange}:{code}':
     get:
       tags:
@@ -1030,8 +1015,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        -
-          ApiKeyAuth: {  }
+        - ApiKeyAuth: []
   /fm/v2/token_info:
     get:
       tags:
@@ -1063,8 +1047,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       security:
-        -
-          ApiKeyAuth: {  }
+        - ApiKeyAuth: []
 components:
   schemas:
     Allocation:
