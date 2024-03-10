@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import ru.tinkoff.trade.invest.dto.V1Share;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,7 +40,7 @@ public class Stock {
 
     @Type(type = "jsonb")
     @Column(name = "share_data", columnDefinition = "json", nullable = false)
-    private String shareData;
+    private V1Share shareData;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "sectors_info_id", referencedColumnName = "id")
