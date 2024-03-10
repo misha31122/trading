@@ -41,18 +41,15 @@ public class SectorsInfoServiceImpl implements SectorsInfoService {
                 V1Share share = objectMapper.readValue(st.getShareData(), V1Share.class);
                 ru.tinkoff.trade.financemarker.dto.Stock stock = stocksApiClient.fmV2StocksExchangecodeGet("MOEX", share.getTicker(), "info");
                 SectorsInfo sectorsInfo = sectorsMapper.stockInfoToSectorsInfo(stock.getInfo());
-                SectorsInfo sectorsInfoFromBd = sectorsInfoRepository
+                sectorsInfoRepository
                         .findSectorInfo(sectorsInfo.getIndustry(),
                                 sectorsInfo.getIndustryGroup(),
                                 sectorsInfo.getIndustryGroupId(),
                                 sectorsInfo.getIndustryId(),
                                 sectorsInfo.getSector(),
                                 sectorsInfo.getSectorId())
-                        .orElse(null);
+                        .ifPresent(secInfoFromBd -> sectorsInfo.setId(secInfoFromBd.getId()));
 
-                if (sectorsInfoFromBd != null) {
-                    sectorsInfo.setId(sectorsInfoFromBd.getId());
-                }
                 st.setSectorsInfo(sectorsInfo);
                 stockRepository.save(st);
             } catch (JsonProcessingException e) {

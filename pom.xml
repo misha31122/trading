@@ -16,7 +16,7 @@
     <description>trading bot service</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>14</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <openapi-generator-maven-plugin.version>6.5.0</openapi-generator-maven-plugin.version>
         <springdoc-openapi-ui.version>1.7.0</springdoc-openapi-ui.version>
