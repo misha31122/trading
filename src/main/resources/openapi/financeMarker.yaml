@@ -1,0 +1,2421 @@
+openapi: 3.0.1
+info:
+  title: 'FinanceMarker.ru API'
+  description: 'Токен доступа находится в профиле пользователя на financemarker.ru/profile'
+  contact:
+    name: support@financemarker.ru
+    email: support@financemarker.ru
+  version: v.2.1.0
+externalDocs:
+  description: 'История изменений (ChangeLog)'
+  url: 'https://financemarker.ru/blog/changelog/'
+servers:
+  -
+    url: 'https://financemarker.ru/api'
+paths:
+  /fm/v2/bonds:
+    get:
+      tags:
+        - Bonds
+      summary: 'Получить список облигаций'
+      parameters:
+        -
+          name: limit
+          in: query
+          description: 'Размер ответа (максимум 100)'
+          schema:
+            maximum: 100
+            type: integer
+            default: 30
+        -
+          name: offset
+          in: query
+          description: Отступ
+          schema:
+            type: integer
+            default: 0
+        -
+          name: sort_by
+          in: query
+          description: 'Сортировать по полю'
+          schema:
+            type: string
+        -
+          name: sort_order
+          in: query
+          description: 'Тип сортировки'
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+        -
+          name: updated_in_days
+          in: query
+          description: 'Было обновлено в последние X дней'
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BondInfo'
+        400:
+          description: 'Токен не найден'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: 'Доступ запрещен'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: 'Внутренняя ошибка сервера'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+  '/fm/v2/bonds/{exchange}:{code}':
+    get:
+      tags:
+        - Bonds
+      summary: 'Получить данные по облигации'
+      parameters:
+        -
+          name: include
+          in: query
+          description: 'Разделы данных (ratios,dividends,ideas_aggregated,top_ideas_aggregated.. - название разделов доступны в модели ответа)'
+          schema:
+            type: string
+            default: 'ratios,reports,dividends'
+        -
+          name: exchange
+          in: path
+          required: true
+          schema:
+            type: string
+        -
+          name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Bond'
+        400:
+          description: 'Токен не найден'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: 'Доступ запрещен'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: 'Внутренняя ошибка сервера'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+  /fm/v2/calendar:
+    get:
+      tags:
+        - Calendar
+      summary: 'Календарь предстоящих событий'
+      parameters:
+        -
+          name: limit
+          in: query
+          description: 'Размер ответа (максимум 100)'
+          schema:
+            maximum: 100
+            type: integer
+            default: 30
+        -
+          name: offset
+          in: query
+          description: Отступ
+          schema:
+            type: integer
+            default: 0
+        -
+          name: sort_by
+          in: query
+          description: 'Сортировать по полю'
+          schema:
+            type: string
+        -
+          name: sort_order
+          in: query
+          description: 'Тип сортировки'
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Calendar'
+        400:
+          description: 'Токен не найден'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: 'Доступ запрещен'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: 'Внутренняя ошибка сервера'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+  /fm/v2/disclosure:
+    get:
+      tags:
+        - Disclosure
+      summary: 'Раскрытие корпоративной информации'
+      parameters:
+        -
+          name: limit
+          in: query
+          description: 'Размер ответа (максимум 100)'
+          schema:
+            maximum: 100
+            type: integer
+            default: 30
+        -
+          name: offset
+          in: query
+          description: Отступ
+          schema:
+            type: integer
+            default: 0
+        -
+          name: sort_by
+          in: query
+          description: 'Сортировать по полю'
+          schema:
+            type: string
+        -
+          name: sort_order
+          in: query
+          description: 'Тип сортировки'
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Disclosure'
+        400:
+          description: 'Токен не найден'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: 'Доступ запрещен'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: 'Внутренняя ошибка сервера'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+  /fm/v2/dividends:
+    get:
+      tags:
+        - Dividends
+      summary: 'Получить календарь дивидендов'
+      parameters:
+        -
+          name: limit
+          in: query
+          description: 'Размер ответа (максимум 100)'
+          schema:
+            maximum: 100
+            type: integer
+            default: 30
+        -
+          name: offset
+          in: query
+          description: Отступ
+          schema:
+            type: integer
+            default: 0
+        -
+          name: sort_by
+          in: query
+          description: 'Сортировать по полю'
+          schema:
+            type: string
+        -
+          name: sort_order
+          in: query
+          description: 'Тип сортировки'
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+        -
+          name: updated_in_days
+          in: query
+          description: 'Было обновлено в последние X дней'
+          schema:
+            type: integer
+        -
+          name: mode
+          in: query
+          description: 'Тип календаря (предстоящие/прошедшие дивиденды)'
+          schema:
+            type: string
+            default: upcoming
+            enum:
+              - past
+              - upcoming
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Dividend'
+        400:
+          description: 'Токен не найден'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: 'Доступ запрещен'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: 'Внутренняя ошибка сервера'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+  /fm/v2/etfs:
+    get:
+      tags:
+        - ETFs
+      summary: 'Получить список ETF'
+      parameters:
+        -
+          name: limit
+          in: query
+          description: 'Размер ответа (максимум 100)'
+          schema:
+            maximum: 100
+            type: integer
+            default: 30
+        -
+          name: offset
+          in: query
+          description: Отступ
+          schema:
+            type: integer
+            default: 0
+        -
+          name: sort_by
+          in: query
+          description: 'Сортировать по полю'
+          schema:
+            type: string
+        -
+          name: sort_order
+          in: query
+          description: 'Тип сортировки'
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+        -
+          name: updated_in_days
+          in: query
+          description: 'Было обновлено в последние X дней'
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EtfInfo'
+        400:
+          description: 'Токен не найден'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: 'Доступ запрещен'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: 'Внутренняя ошибка сервера'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+  '/fm/v2/etfs/{exchange}:{code}':
+    get:
+      tags:
+        - ETFs
+      summary: 'Получить данные по ETF'
+      parameters:
+        -
+          name: include
+          in: query
+          description: 'Разделы данных (ratios,dividends,ideas_aggregated,top_ideas_aggregated.. - название разделов доступны в модели ответа)'
+          schema:
+            type: string
+            default: 'ratios,reports,dividends'
+        -
+          name: exchange
+          in: path
+          required: true
+          schema:
+            type: string
+        -
+          name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Etf'
+        400:
+          description: 'Токен не найден'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: 'Доступ запрещен'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: 'Внутренняя ошибка сервера'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+  /fm/v2/exchanges:
+    get:
+      tags:
+        - Exchanges
+      summary: 'Получить список бирж'
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Exchange'
+        400:
+          description: 'Токен не найден'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: 'Доступ запрещен'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: 'Внутренняя ошибка сервера'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+  /fm/v2/experts:
+    get:
+      tags:
+        - Experts
+      summary: 'Получить рейтинг аналитиков'
+      parameters:
+        -
+          name: limit
+          in: query
+          description: 'Размер ответа (максимум 100)'
+          schema:
+            maximum: 100
+            type: integer
+            default: 30
+        -
+          name: offset
+          in: query
+          description: Отступ
+          schema:
+            type: integer
+            default: 0
+        -
+          name: sort_by
+          in: query
+          description: 'Сортировать по полю'
+          schema:
+            type: string
+        -
+          name: sort_order
+          in: query
+          description: 'Тип сортировки'
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+        -
+          name: updated_in_days
+          in: query
+          description: 'Было обновлено в последние X дней'
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Expert'
+        400:
+          description: 'Токен не найден'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: 'Доступ запрещен'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: 'Внутренняя ошибка сервера'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+  /fm/v2/ideas:
+    get:
+      tags:
+        - Ideas
+      summary: 'Получить список инвест-идей'
+      parameters:
+        -
+          name: limit
+          in: query
+          description: 'Размер ответа (максимум 100)'
+          schema:
+            maximum: 100
+            type: integer
+            default: 30
+        -
+          name: offset
+          in: query
+          description: Отступ
+          schema:
+            type: integer
+            default: 0
+        -
+          name: sort_by
+          in: query
+          description: 'Сортировать по полю'
+          schema:
+            type: string
+        -
+          name: sort_order
+          in: query
+          description: 'Тип сортировки'
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+        -
+          name: updated_in_days
+          in: query
+          description: 'Было обновлено в последние X дней'
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Idea'
+        400:
+          description: 'Токен не найден'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: 'Доступ запрещен'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: 'Внутренняя ошибка сервера'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+  '/fm/v2/ideas/{id}':
+    get:
+      tags:
+        - Ideas
+      summary: 'Получить детали инвест-идеи'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/IdeaDetails'
+        400:
+          description: 'Токен не найден'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: 'Доступ запрещен'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: 'Внутренняя ошибка сервера'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+  /fm/v2/ideas_aggregated:
+    get:
+      tags:
+        - Ideas
+      summary: 'Получить агрегированные прогнозы'
+      parameters:
+        -
+          name: limit
+          in: query
+          description: 'Размер ответа (максимум 100)'
+          schema:
+            maximum: 100
+            type: integer
+            default: 30
+        -
+          name: offset
+          in: query
+          description: Отступ
+          schema:
+            type: integer
+            default: 0
+        -
+          name: sort_by
+          in: query
+          description: 'Сортировать по полю'
+          schema:
+            type: string
+        -
+          name: sort_order
+          in: query
+          description: 'Тип сортировки'
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+        -
+          name: top_analytics
+          in: query
+          description: 'Только ТОП аналитики'
+          schema:
+            type: boolean
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IdeaAggregated'
+        400:
+          description: 'Токен не найден'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: 'Доступ запрещен'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: 'Внутренняя ошибка сервера'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+  /fm/v2/insider_transactions:
+    get:
+      tags:
+        - Insiders
+      summary: 'Получить сделки инсайдеров'
+      parameters:
+        -
+          name: limit
+          in: query
+          description: 'Размер ответа (максимум 100)'
+          schema:
+            maximum: 100
+            type: integer
+            default: 30
+        -
+          name: offset
+          in: query
+          description: Отступ
+          schema:
+            type: integer
+            default: 0
+        -
+          name: sort_by
+          in: query
+          description: 'Сортировать по полю'
+          schema:
+            type: string
+        -
+          name: sort_order
+          in: query
+          description: 'Тип сортировки'
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+        -
+          name: updated_in_days
+          in: query
+          description: 'Было обновлено в последние X дней'
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InsiderTransaction'
+        400:
+          description: 'Токен не найден'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: 'Доступ запрещен'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: 'Внутренняя ошибка сервера'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+  /fm/v2/insiders:
+    get:
+      tags:
+        - Insiders
+      summary: 'Получить список инсайдеров'
+      parameters:
+        -
+          name: limit
+          in: query
+          description: 'Размер ответа (максимум 100)'
+          schema:
+            maximum: 100
+            type: integer
+            default: 30
+        -
+          name: offset
+          in: query
+          description: Отступ
+          schema:
+            type: integer
+            default: 0
+        -
+          name: sort_by
+          in: query
+          description: 'Сортировать по полю'
+          schema:
+            type: string
+        -
+          name: sort_order
+          in: query
+          description: 'Тип сортировки'
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Insider'
+        400:
+          description: 'Токен не найден'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: 'Доступ запрещен'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: 'Внутренняя ошибка сервера'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+  /fm/v2/stocks:
+    get:
+      tags:
+        - Stocks
+      summary: 'Получить список компаний'
+      parameters:
+        -
+          name: limit
+          in: query
+          description: 'Размер ответа (максимум 100)'
+          schema:
+            maximum: 100
+            type: integer
+            default: 30
+        -
+          name: offset
+          in: query
+          description: Отступ
+          schema:
+            type: integer
+            default: 0
+        -
+          name: sort_by
+          in: query
+          description: 'Сортировать по полю'
+          schema:
+            type: string
+        -
+          name: sort_order
+          in: query
+          description: 'Тип сортировки'
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+        -
+          name: updated_in_days
+          in: query
+          description: 'Было обновлено в последние X дней'
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StockInfo'
+        400:
+          description: 'Токен не найден'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: 'Доступ запрещен'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: 'Внутренняя ошибка сервера'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+  '/fm/v2/stocks/{exchange}:{code}':
+    get:
+      tags:
+        - Stocks
+      summary: 'Получить данные по компании'
+      parameters:
+        -
+          name: include
+          in: query
+          description: 'Разделы данных (ratios,dividends,ideas_aggregated,top_ideas_aggregated.. - название разделов доступны в модели ответа)'
+          schema:
+            type: string
+            default: 'ratios,reports,dividends'
+        -
+          name: exchange
+          in: path
+          required: true
+          schema:
+            type: string
+        -
+          name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Stock'
+        400:
+          description: 'Токен не найден'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: 'Доступ запрещен'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: 'Внутренняя ошибка сервера'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+  /fm/v2/token_info:
+    get:
+      tags:
+        - Token
+      summary: 'Получить информацию по API токену'
+      responses:
+        200:
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TokenInfo'
+        400:
+          description: 'Токен не найден'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        403:
+          description: 'Доступ запрещен'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: 'Внутренняя ошибка сервера'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - ApiKeyAuth: []
+components:
+  schemas:
+    Allocation:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Тикер
+          example: FMRU
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        name:
+          type: string
+          description: Актив
+        percent:
+          type: string
+          description: 'Процент распределения'
+        type:
+          type: string
+          description: Категория
+    Bond:
+      type: object
+      properties:
+        coupons:
+          type: array
+          items:
+            $ref: '#/components/schemas/Coupon'
+        ideas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Idea'
+        info:
+          $ref: '#/components/schemas/BondInfo'
+    BondInfo:
+      type: object
+      properties:
+        accruedint:
+          type: number
+          description: НКД
+        changed_at:
+          type: string
+          description: 'Последнее обновление'
+          format: date-time
+        code:
+          type: string
+          description: Тикер
+          example: SU26229RMFS3
+        couponfrequency:
+          type: integer
+          description: 'Частота выплаты купона'
+        couponpercent:
+          type: number
+          description: 'Доходность купона'
+        couponvalue:
+          type: number
+          description: 'Размер купона'
+        currency:
+          type: string
+          description: 'Валюта номинала'
+        daystoredemption:
+          type: integer
+          description: 'Дней до погашения'
+        duration:
+          type: integer
+          description: Дюрация
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        facevalue:
+          type: number
+          description: Номинал
+        initialfacevalue:
+          type: integer
+          description: 'Первоначальный номинал'
+        isin:
+          type: string
+          description: ISIN
+        issuedate:
+          type: string
+          description: 'Дата выпуска'
+          format: date
+        issuesize:
+          type: integer
+          description: 'Объем выпуска'
+        latname:
+          type: string
+          description: Транскрипция
+        listlevel:
+          type: string
+          description: 'Уровень листинга'
+        matdate:
+          type: string
+          description: 'Дата погашения'
+          format: date
+        name:
+          type: string
+          description: Название
+        nextcoupon:
+          type: string
+          description: 'Ближайший купон'
+          format: date
+        offerdate:
+          type: string
+          description: 'Дата оферты'
+          format: date
+        type:
+          type: string
+          description: Тип
+    Calendar:
+      type: object
+      properties:
+        category:
+          type: string
+          description: 'Тип события'
+        code:
+          type: string
+          description: Тикер
+          example: GAZP
+        date:
+          type: string
+          description: 'Дата события'
+          format: date
+        event:
+          type: string
+          description: 'Описание события'
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        link:
+          type: string
+          description: Источник
+          format: url
+        month:
+          type: integer
+          description: Месяц
+        period:
+          type: string
+          description: Период
+        type:
+          type: string
+          description: 'Тип отчета'
+        year:
+          type: integer
+          description: Год
+    Coupon:
+      type: object
+      properties:
+        changed_at:
+          type: string
+          description: 'Последнее обновление'
+          format: date-time
+        code:
+          type: string
+          description: Тикер
+          example: SU26229RMFS3
+        currency:
+          type: string
+          description: Валюта
+        date:
+          type: string
+          description: 'Дата выплаты купона'
+          format: date
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        type:
+          type: string
+          description: 'Тип выплаты (купон/амортизация)'
+        value:
+          type: string
+          description: 'Размер выплаты'
+        valueprc:
+          type: string
+          description: 'Доходность выплаты'
+    Disclosure:
+      type: object
+      properties:
+        category:
+          type: string
+          description: 'Тип события'
+        code:
+          type: string
+          description: Тикер
+          example: GAZP
+        date:
+          type: string
+          description: 'Дата события'
+          format: date
+        description:
+          type: string
+          description: 'Пояснение к событию'
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        link:
+          type: string
+          description: Источник
+          format: url
+        month:
+          type: integer
+          description: Месяц
+        period:
+          type: string
+          description: Период
+        title:
+          type: string
+          description: 'Описание события'
+        type:
+          type: string
+          description: 'Тип отчета'
+        year:
+          type: integer
+          description: Год
+    Dividend:
+      type: object
+      properties:
+        changed_at:
+          type: string
+          description: 'Последнее обновление'
+          format: date-time
+        code:
+          type: string
+          description: Тикер
+          example: GAZP
+        div_amount:
+          type: number
+          description: 'Размер дивиденда'
+        div_curr:
+          type: string
+          description: 'Валюта дивиденда'
+          example: RUB
+        div_percent:
+          type: number
+          description: 'Доходность дивиденда, в %'
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        last_buy_date:
+          type: string
+          description: 'Последний день покупки'
+          format: date
+        last_buy_price:
+          type: number
+          description: 'Цена на последний день покупки'
+        link:
+          type: string
+          description: Источник
+          format: url
+        reestr_close_date:
+          type: string
+          description: 'Дата закрытия реестра'
+          format: date
+        status:
+          type: string
+          description: 'Статус утверждения'
+        type:
+          type: string
+          description: Тип
+        year:
+          type: integer
+          description: Год
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: 'Код ошибки'
+        message:
+          type: string
+          description: 'Сообщение об ошибке'
+    Etf:
+      type: object
+      properties:
+        allocations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Allocation'
+        ideas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Idea'
+        info:
+          $ref: '#/components/schemas/EtfInfo'
+    EtfInfo:
+      type: object
+      properties:
+        assets:
+          type: string
+          description: 'Класс инвестиций'
+        changed_at:
+          type: string
+          description: 'Последнее обновление'
+          format: date-time
+        code:
+          type: string
+          description: Тикер
+          example: FMRU
+        currency:
+          type: string
+          description: Валюта
+        dividend_distribution:
+          type: string
+          description: 'Дивидендная политика'
+        dividend_yield:
+          type: number
+          description: 'Дивидендная доходность'
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        expense_ratio:
+          type: number
+          description: Комиссии
+        isin:
+          type: string
+          description: ISIN
+        issuer:
+          type: string
+          description: УК
+        issuer_link:
+          type: string
+          description: 'Сайт УК'
+          format: url
+        issuer_logo:
+          type: string
+          description: 'Ссылка на УК'
+          format: url
+        link:
+          type: string
+          description: Ссылка
+          format: url
+        name:
+          type: string
+          description: Название
+        name_en:
+          type: string
+          description: Транскрипция
+        region:
+          type: string
+          description: 'Регион инвестиций'
+        sector:
+          type: string
+          description: 'Сектор инвестиций'
+        start_date:
+          type: string
+          description: 'Начало торгов'
+          format: date
+        total_assets:
+          type: number
+          description: 'Активов в управлении'
+    Exchange:
+      type: object
+      properties:
+        country:
+          type: string
+          description: 'Код страны'
+          example: RU
+        currency:
+          type: string
+          description: 'Код основной валюты торгов'
+          example: RUB
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        mic:
+          type: string
+          description: 'Код биржи по классификации MIC'
+          example: MISX
+        name:
+          type: string
+          description: Название
+          example: 'Московская биржа'
+    Expert:
+      type: object
+      properties:
+        c_av_duration:
+          type: integer
+          description: 'Средний срок идей, среди завершенных'
+        c_av_profit:
+          type: integer
+          description: 'Средняя доходность идей, среди завершенных'
+        c_num:
+          type: integer
+          description: 'Всего завершенных идей'
+        c_num_profit:
+          type: integer
+          description: 'Всего прибыльных идей, среди завершенных'
+        c_perc_profit:
+          type: integer
+          description: 'Процент прибыльных идей, среди завершенных'
+        c_perc_success:
+          type: integer
+          description: 'Процент успешных идей, среди завершенных'
+        category:
+          type: string
+          description: Категория
+        changed_at:
+          type: string
+          description: 'Последнее обновление'
+          format: date-time
+        community:
+          type: string
+          description: Сообщество
+        firstname:
+          type: string
+          description: Имя
+        lastname:
+          type: string
+          description: Фамилия
+        picture:
+          type: string
+          description: Аватар
+          format: url
+        ranking_all:
+          type: number
+          description: 'Рейтинг за все время'
+        ranking_month:
+          type: number
+          description: 'Рейтинг за месяц'
+        ranking_year:
+          type: number
+          description: 'Рейтинг за год'
+        t_av_duration:
+          type: integer
+          description: 'Средний срок идей'
+        t_av_profit:
+          type: integer
+          description: 'Средняя доходность идей'
+        t_num:
+          type: integer
+          description: 'Всего идей'
+        t_num_profit:
+          type: integer
+          description: 'Всего прибыльных идей'
+        t_perc_profit:
+          type: integer
+          description: 'Процент прибыльных идей'
+    Idea:
+      type: object
+      properties:
+        changed_at:
+          type: string
+          description: 'Последнее обновление'
+          format: date-time
+        code:
+          type: string
+          description: Тикер
+          example: GAZP
+        community:
+          type: string
+          description: Сообщество
+          example: 'Брокер Финам'
+        date_in:
+          type: string
+          description: 'Дата открытия идеи'
+          format: date
+        date_out:
+          type: string
+          description: 'Плановая дата закрытия идеи'
+          format: date
+        duration_in_month:
+          type: integer
+          description: 'Длительность в месяцах'
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        firstname:
+          type: string
+          description: 'Имя аналитика'
+          example: Иван
+        id:
+          type: integer
+          description: 'Ид. идеи'
+        idea:
+          type: string
+          description: 'Заголовок идеи'
+        lastname:
+          type: string
+          description: 'Фамилия аналитика'
+          example: Иванов
+        link:
+          type: string
+          description: Источник
+          format: url
+        price_day:
+          type: number
+          description: 'Текущая цена'
+        price_in:
+          type: number
+          description: 'Цена входа'
+        price_out:
+          type: number
+          description: 'Целевая цена'
+        profit_perc_year:
+          type: number
+          description: Доходность
+        status:
+          type: string
+          description: 'Статус идеи'
+        status_comment:
+          type: string
+          description: 'Обоснование закрытия'
+        status_date:
+          type: string
+          description: 'Дата закрытия'
+          format: date
+        status_link:
+          type: string
+          description: 'Ссылка на закрытие'
+          format: url
+        status_price:
+          type: number
+          description: 'Цена закрытия идеи'
+        status_profit:
+          type: number
+          description: 'Доходность при закрытии'
+        stop_loss:
+          type: number
+          description: Стоп-лосс
+        update_comment:
+          type: string
+          description: 'Причина обновления'
+        update_date:
+          type: string
+          description: 'Последнее обновление'
+          format: date
+        update_link:
+          type: string
+          description: 'Источник обновления'
+          format: url
+        update_price:
+          type: number
+          description: 'Обновленная целевая цена'
+    IdeaAggregated:
+      type: object
+      properties:
+        buy_num:
+          type: integer
+          description: 'Прогнозов ''Покупать'''
+        code:
+          type: string
+          description: Тикер
+          example: GAZP
+        current_price:
+          type: number
+          description: 'Текущая цена'
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        hold_num:
+          type: integer
+          description: 'Прогнозов ''Держать'''
+        sell_num:
+          type: integer
+          description: 'Прогнозов ''Продавать'''
+        target:
+          type: string
+          description: 'Агрегированная рекоммендация'
+        target_price:
+          type: number
+          description: 'Агрегированная целевая цена'
+        target_return:
+          type: number
+          description: 'Потенциальная доходность'
+        total_num:
+          type: integer
+          description: 'Всего актуальных прогнозов'
+    IdeaDetails:
+      type: object
+      properties:
+        changed_at:
+          type: string
+          description: 'Последнее обновление'
+          format: date-time
+        code:
+          type: string
+          description: Тикер
+          example: GAZP
+        community:
+          type: string
+          description: Сообщество
+          example: 'Брокер Финам'
+        date_in:
+          type: string
+          description: 'Дата открытия идеи'
+          format: date
+        date_out:
+          type: string
+          description: 'Плановая дата закрытия идеи'
+          format: date
+        description:
+          type: string
+          description: 'Подробное описание идеи'
+        duration_in_month:
+          type: integer
+          description: 'Длительность в месяцах'
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        firstname:
+          type: string
+          description: 'Имя аналитика'
+          example: Иван
+        id:
+          type: integer
+          description: 'Ид. идеи'
+        idea:
+          type: string
+          description: 'Заголовок идеи'
+        lastname:
+          type: string
+          description: 'Фамилия аналитика'
+          example: Иванов
+        link:
+          type: string
+          description: Источник
+          format: url
+        price_day:
+          type: number
+          description: 'Текущая цена'
+        price_in:
+          type: number
+          description: 'Цена входа'
+        price_out:
+          type: number
+          description: 'Целевая цена'
+        profit_perc_year:
+          type: number
+          description: Доходность
+        status:
+          type: string
+          description: 'Статус идеи'
+        status_comment:
+          type: string
+          description: 'Обоснование закрытия'
+        status_date:
+          type: string
+          description: 'Дата закрытия'
+          format: date
+        status_link:
+          type: string
+          description: 'Ссылка на закрытие'
+          format: url
+        status_price:
+          type: number
+          description: 'Цена закрытия идеи'
+        status_profit:
+          type: number
+          description: 'Доходность при закрытии'
+        stop_loss:
+          type: number
+          description: Стоп-лосс
+        update_comment:
+          type: string
+          description: 'Причина обновления'
+        update_date:
+          type: string
+          description: 'Последнее обновление'
+          format: date
+        update_link:
+          type: string
+          description: 'Источник обновления'
+          format: url
+        update_price:
+          type: number
+          description: 'Обновленная целевая цена'
+    Insider:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Тикер
+          example: GAZP
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        last_filling_date:
+          type: string
+          description: 'Последняя сделка (раскрытие)'
+        owner:
+          type: string
+          description: Инсайдер
+        owner_title:
+          type: string
+          description: Позиция/должность
+    InsiderTransaction:
+      type: object
+      properties:
+        amount:
+          type: number
+          description: 'Кол-во акций'
+        approximate:
+          type: boolean
+          description: 'Флаг примерного расчета параметров сделки'
+        changed_at:
+          type: string
+          description: 'Последнее обновление'
+          format: date-time
+        code:
+          type: string
+          description: Тикер
+          example: GAZP
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        filling_date:
+          type: string
+          description: 'Дата раскрытия'
+        link:
+          type: string
+          description: Источник
+        own_after:
+          type: number
+          description: 'Доля акций после сделки'
+        own_before:
+          type: number
+          description: 'Доля акций до сделки'
+        owner:
+          type: string
+          description: Инсайдер
+        owner_title:
+          type: string
+          description: Позиция/должность
+        price:
+          type: number
+          description: Цена
+        shares_after:
+          type: number
+          description: 'Кол-во акций после сделки'
+        shares_before:
+          type: number
+          description: 'Кол-во акций до сделки'
+        transaction_date:
+          type: string
+          description: 'Дата сделки'
+        transaction_type:
+          type: string
+          description: 'Тип сделки'
+        value:
+          type: number
+          description: Объем
+    Owner:
+      type: object
+      properties:
+        changed_at:
+          type: string
+          description: 'Последнее обновление'
+          format: date-time
+        code:
+          type: string
+          description: Тикер
+          example: GAZP
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        link:
+          type: string
+          description: Источник
+        month:
+          type: integer
+          description: Месяц
+        own:
+          type: string
+          description: Доля
+        owner:
+          type: string
+          description: Акционер
+        year:
+          type: integer
+          description: Год
+    Ratio:
+      type: object
+      properties:
+        active:
+          type: boolean
+          description: Текущий
+        capex_revenue:
+          type: number
+          description: CAPEX/Выручка
+        capital:
+          type: number
+          description: Капитализация
+        changed_at:
+          type: string
+          description: 'Последнее обновление'
+          format: date-time
+        code:
+          type: string
+          description: Тикер
+          example: GAZP
+        current_ratio:
+          type: number
+          description: 'Current Ratio'
+        debt_equity:
+          type: number
+          description: Debt/Equity
+        debt_ratio:
+          type: number
+          description: 'Debt Ratio'
+        debtebitda:
+          type: number
+          description: Debt/EBITDA
+        dpr:
+          type: number
+          description: DPR
+        ebitda_margin:
+          type: number
+          description: 'EBITDA margin'
+        ev_ebit:
+          type: number
+          description: EV/EBIT
+        evebitda:
+          type: number
+          description: EV/EBITDA
+        evs:
+          type: number
+          description: EV/S
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        gross_margin:
+          type: number
+          description: 'Gross margin'
+        month:
+          type: integer
+          description: Месяц
+        net_margin:
+          type: number
+          description: 'Net margin'
+        netdebt_ebitda:
+          type: number
+          description: NetDebt/EBITDA
+        operation_margin:
+          type: number
+          description: 'Operating margin'
+        pbv:
+          type: number
+          description: P/BV
+        pcf:
+          type: number
+          description: P/CF
+        pe:
+          type: number
+          description: P/E
+        period:
+          type: string
+          description: Период
+        pfcf:
+          type: number
+          description: P/FCF
+        pffo:
+          type: number
+          description: P/FFO
+        ps:
+          type: number
+          description: P/S
+        roa:
+          type: number
+          description: ROA
+        roce:
+          type: number
+          description: ROCE
+        roe:
+          type: number
+          description: ROE
+        roic:
+          type: number
+          description: ROIC
+        ros:
+          type: number
+          description: ROS
+        type:
+          type: string
+          description: 'Тип отчета'
+        year:
+          type: integer
+          description: Год
+    Report:
+      type: object
+      properties:
+        accounts_payable:
+          type: number
+          description: 'Кредиторская задолженность, итого'
+        accounts_payable_current:
+          type: number
+          description: 'Текущая кредиторская задолженность'
+        accounts_payable_long:
+          type: number
+          description: 'Долгосрочная кредиторская задолженность'
+        accounts_receivable:
+          type: number
+          description: 'Дебиторская задолженность, итого'
+        accounts_receivable_current:
+          type: number
+          description: 'Текущая дебиторская задолженность'
+        accounts_receivable_long:
+          type: number
+          description: 'Долгосрочная дебиторская задолженность'
+        amount:
+          type: number
+          description: 'Ед. измерения'
+        capex:
+          type: number
+          description: 'Капитальные затраты'
+        cash_and_equiv:
+          type: number
+          description: 'Денежные средства'
+        cash_paid_for_interest:
+          type: number
+          description: 'Проценты уплаченные (ДДС)'
+        cff:
+          type: number
+          description: 'Финанс. денеж. поток'
+        cfi:
+          type: number
+          description: 'Инвест. денеж. поток'
+        cfo:
+          type: number
+          description: 'Операц. денеж. поток'
+        changed_at:
+          type: string
+          description: 'Последнее обновление'
+          format: date-time
+        code:
+          type: string
+          description: Тикер
+          example: GAZP
+        commission_expense:
+          type: number
+          description: 'Комиссионные расходы'
+        commission_income:
+          type: number
+          description: 'Комиссионные доходы'
+        commission_net:
+          type: number
+          description: 'Чистые комиссионные доходы'
+        cost_of_sales:
+          type: number
+          description: 'Себестоимость продаж'
+        curr:
+          type: string
+          description: Валюта
+        current_assets:
+          type: number
+          description: 'Оборотные активы'
+        current_debt:
+          type: number
+          description: 'Тек. кредиты'
+        current_lease:
+          type: number
+          description: 'Тек. обяз. аренды'
+        current_liabilities:
+          type: number
+          description: 'Тек. обязательства'
+        depr_depl_amort:
+          type: number
+          description: Амортизация
+        earnings:
+          type: number
+          description: 'Чистая прибыль'
+        earnings_stock_holders:
+          type: number
+          description: 'Прибыль на акционеров'
+        earnings_wo_tax:
+          type: number
+          description: 'Прибыль до налогов'
+        ebit:
+          type: number
+          description: EBIT
+        ebitda:
+          type: number
+          description: EBITDA
+        equity:
+          type: number
+          description: 'Собственный капитал'
+        equity_stock_holders:
+          type: number
+          description: 'Капитал на акционеров'
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        fcf:
+          type: number
+          description: 'Свободный денеж. поток'
+        ffo:
+          type: number
+          description: 'Средства от оп. деятельности'
+        goodwill:
+          type: number
+          description: Гудвил
+        gross_profit:
+          type: number
+          description: 'Валовая прибыль'
+        interest_expense:
+          type: number
+          description: 'Процентные расходы'
+        interest_income:
+          type: number
+          description: 'Процентные доходы'
+        interest_net:
+          type: number
+          description: 'Итого проценты'
+        inventories:
+          type: number
+          description: Запасы
+        issuance_of_debt:
+          type: number
+          description: 'Поступление долга'
+        link:
+          type: string
+          description: 'Источник - отчет'
+          format: url
+        link_press:
+          type: string
+          description: 'Источник - презентация'
+          format: url
+        long_term_assets:
+          type: number
+          description: 'Внеоборотные активы'
+        long_term_debt:
+          type: number
+          description: 'Долг. кредиты'
+        long_term_investments:
+          type: number
+          description: 'Долгосрочные инвестиции'
+        long_term_lease:
+          type: number
+          description: 'Долг. обяз. аренды'
+        long_term_liabilities:
+          type: number
+          description: 'Долг. обязательства'
+        month:
+          type: integer
+          description: Месяц
+        net_debt:
+          type: number
+          description: 'Общий долг'
+        net_issuance_of_debt:
+          type: number
+          description: 'Погашение долга, итого'
+        operating_income:
+          type: number
+          description: 'Операционная прибыль'
+        payments_for_dividends:
+          type: number
+          description: 'Выплаты на дивиденды'
+        payments_of_debt:
+          type: number
+          description: 'Погашение долга'
+        period:
+          type: string
+          description: Период
+        preliminary:
+          type: boolean
+          description: 'Предварительные данные'
+        property_plant_equipment:
+          type: number
+          description: 'Основные средства'
+        repurchase_of_stock:
+          type: number
+          description: 'Выкуп собственных акций'
+        research_and_development:
+          type: number
+          description: 'Разработка и исследования'
+        retained_earnings:
+          type: number
+          description: 'Нераспределенная прибыль'
+        revenue:
+          type: number
+          description: Выручка
+        sel_gen_adm_expenses:
+          type: number
+          description: 'Расходы на персонал'
+        share_premium:
+          type: number
+          description: 'Эмиссионный доход'
+        total_assets:
+          type: number
+          description: Активы
+        total_debt:
+          type: number
+          description: 'Чистый долг'
+        total_expenses:
+          type: number
+          description: 'Операционные расходы'
+        total_liabilities:
+          type: number
+          description: Обязательства
+        type:
+          type: string
+          description: 'Тип отчета'
+        year:
+          type: integer
+          description: Год
+    Share:
+      type: object
+      properties:
+        changed_at:
+          type: string
+          description: 'Последнее обновление'
+          format: date-time
+        code:
+          type: string
+          description: Тикер
+          example: GAZP
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        month:
+          type: integer
+          description: Месяц
+        num:
+          type: number
+          description: 'Кол-во акций'
+        price:
+          type: number
+          description: Цена
+        year:
+          type: integer
+          description: Год
+    Stock:
+      type: object
+      properties:
+        dividends:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dividend'
+        ideas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Idea'
+        ideasAggregated:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdeaAggregated'
+        info:
+          $ref: '#/components/schemas/StockInfo'
+        insiderTransactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/InsiderTransaction'
+        owners:
+          type: array
+          items:
+            $ref: '#/components/schemas/Owner'
+        ratios:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ratio'
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/Report'
+        shares:
+          type: array
+          items:
+            $ref: '#/components/schemas/Share'
+        summary:
+          $ref: '#/components/schemas/StockSummary'
+    StockInfo:
+      type: object
+      properties:
+        changed_at:
+          type: string
+          description: 'Последнее обновление'
+          format: date-time
+        code:
+          type: string
+          description: Тикер
+          example: GAZP
+        country:
+          type: string
+          description: Страна
+        currency:
+          type: string
+          description: 'Валюта торгов'
+        description:
+          type: string
+          description: Описание
+        disc_link:
+          type: string
+          description: 'Страница раскрытия информации'
+        exchange:
+          type: string
+          description: 'Код биржи'
+          example: MOEX
+        industry:
+          type: string
+          description: Отрасль
+        industry_group:
+          type: string
+          description: Отрасль
+        industry_group_id:
+          type: integer
+          description: 'Код группы отраслей'
+        industry_id:
+          type: integer
+          description: 'Код отрасли'
+        logolink:
+          type: string
+          description: Логотип
+          format: url
+        name:
+          type: string
+          description: Название
+        primary_report_code:
+          type: string
+          description: 'Первичный тикер'
+        primary_report_exchange:
+          type: string
+          description: 'Первичный код биржи'
+        report_frequency:
+          type: string
+          description: 'Периодичность публикации отчетов'
+        sector:
+          type: string
+          description: Сектор
+        sector_id:
+          type: integer
+          description: 'Код сектора'
+        site:
+          type: string
+          description: Сайт
+        spb:
+          type: boolean
+          description: 'Торгуется на СПБ бирже'
+        sub_industry:
+          type: string
+          description: Под-отрасль
+        sub_industry_id:
+          type: integer
+          description: 'Код под-отрасли'
+    StockSummary:
+      type: object
+      properties:
+        capital:
+          type: number
+          description: Капитализация
+        changed_at:
+          type: string
+          description: 'Последнее обновление'
+          format: date-time
+        debt_rank:
+          type: integer
+          description: Долг
+        div_rank:
+          type: integer
+          description: Дивиденды
+        dividend_frequency:
+          type: integer
+          description: 'Частота выплаты дивидендов'
+        dividend_gap_average:
+          type: integer
+          description: 'Среднее закрытие гэпа, дней'
+        dividend_gap_last:
+          type: integer
+          description: 'Последнее закрытие гэпа, дней'
+        dividend_growth:
+          type: integer
+          description: 'Рост дивидендов, лет подряд'
+        dividend_index:
+          type: number
+          description: 'Дивидендный рейтинг'
+        dividend_strike:
+          type: integer
+          description: 'Дивидендный страйк'
+        dividend_yield_12m:
+          type: number
+          description: 'Дивидендная доходность'
+        dividend_yield_3y:
+          type: number
+          description: 'Среднаяя дивидендная доходность за 3 года'
+        dividend_yield_5y:
+          type: number
+          description: 'Среднаяя дивидендная доходность за 5 лет'
+        fin_rank:
+          type: integer
+          description: Бизнес
+        growth_assets_3y:
+          type: number
+          description: 'Средний рост активов за 3 года'
+        growth_assets_5y:
+          type: number
+          description: 'Средний рост активов за 5 лет'
+        growth_earnings_3y:
+          type: number
+          description: 'Средний рост прибыли за 3 года'
+        growth_earnings_5y:
+          type: number
+          description: 'Средний рост прибыли за 5 лет'
+        growth_ebitda_3y:
+          type: number
+          description: 'Средний рост EBITDA за 3 года'
+        growth_ebitda_5y:
+          type: number
+          description: 'Средний рост EBITDA за 5 лет'
+        growth_equity_3y:
+          type: number
+          description: 'Средний рост собственного капитала за 3 года'
+        growth_equity_5y:
+          type: number
+          description: 'Средний рост собственного капитала за 5 лет'
+        growth_fcf_3y:
+          type: number
+          description: 'Средний рост FCF за 3 года'
+        growth_fcf_5y:
+          type: number
+          description: 'Средний рост FCF за 5 лет'
+        growth_netdebt_3y:
+          type: number
+          description: 'Средний рост чистого долга за 3 года'
+        growth_netdebt_5y:
+          type: number
+          description: 'Средний рост чистого долга за 5 лет'
+        growth_operation_3y:
+          type: number
+          description: 'Средний рост ОП за 3 года'
+        growth_operation_5y:
+          type: number
+          description: 'Средний рост ОП за 5 лет'
+        growth_revenue_3y:
+          type: number
+          description: 'Средний рост выручки за 3 года'
+        growth_revenue_5y:
+          type: number
+          description: 'Средний рост выручки за 5 лет'
+        rent_rank:
+          type: integer
+          description: Рентабельность
+        stock_rank:
+          type: integer
+          description: Моментум
+        total_rank:
+          type: integer
+          description: 'Итоговый рейтинг'
+        value_rank:
+          type: integer
+          description: Стоимость
+    TokenInfo:
+      type: object
+      properties:
+        day_limit:
+          type: integer
+          description: 'Остаток единиц доступа до конца дня'
+        valid_to:
+          type: string
+          description: 'Дата окончания подписки'
+          format: date
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: api_token
+      in: query
+x-original-swagger-version: 2.0.0

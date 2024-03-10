@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static ru.tinkoff.trade.invest.dto.V1InstrumentStatus.BASE;
 
 @Slf4j
@@ -54,10 +55,14 @@ public class StockServiceImpl implements StockService {
         log.info("Get {} russians companies shares", russiansShares.size());
 
         if(!russiansShares.isEmpty()) {
-            Set<Stock> russiansSharesForSave = russiansShares.stream()
-                    .map(stockMapper::shareToStock)
-                    .collect(Collectors.toSet());
-            stockRepository.saveAll(russiansSharesForSave);
+            russiansShares.forEach(share -> {
+                if(isNotBlank(share.getFigi())) {
+                    stockRepository.findByFigi(share.getFigi())
+                            .ifPresentOrElse(stockFromBd -> stockRepository
+                                            .save(stockMapper.shareToStockFromBd(share, stockFromBd)),
+                                    () -> stockRepository.save(stockMapper.shareToStock(share)));
+                }
+            });
         }
     }
 }
