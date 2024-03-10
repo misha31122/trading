@@ -54,9 +54,9 @@ public class StockServiceImpl implements StockService {
 
         log.info("Get {} russians companies shares", russiansShares.size());
 
-        if(!russiansShares.isEmpty()) {
+        if (!russiansShares.isEmpty()) {
             russiansShares.forEach(share -> {
-                if(isNotBlank(share.getFigi())) {
+                if (isNotBlank(share.getFigi())) {
                     stockRepository.findByFigi(share.getFigi())
                             .ifPresentOrElse(stockFromBd -> stockRepository
                                             .save(stockMapper.shareToStockFromBd(share, stockFromBd)),
