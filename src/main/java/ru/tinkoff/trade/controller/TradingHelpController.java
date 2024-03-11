@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.trade.service.SectorsInfoService;
+import ru.tinkoff.trade.service.StockCandlesService;
 import ru.tinkoff.trade.service.StockService;
 
 @RestController
@@ -17,6 +18,7 @@ public class TradingHelpController {
 
   private final StockService stockService;
   private final SectorsInfoService sectorsInfoService;
+  private final StockCandlesService stockCandlesService;
 
   @Operation(
       summary = "Инциализировать таблицу stock компаниями, акции которых торгуся на Московской бирже",
@@ -35,4 +37,15 @@ public class TradingHelpController {
     sectorsInfoService.getSectorsInfoDataFromFinanceMarker();
     return ResponseEntity.ok("Все ок");
   }
+
+  @Operation(
+          summary = "Получить последние часовые свечи за 7 дней для компаний, акции которых торгуся на Московской бирже",
+          description = "Initial sectors_info table")
+  @PutMapping(value = "/init/hours-candles",produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> putSixtyHoursCandles() {
+    stockCandlesService.getHoursCandlesAndSaveToDatabase();
+    return ResponseEntity.ok("Все ок");
+  }
+
+
 }
