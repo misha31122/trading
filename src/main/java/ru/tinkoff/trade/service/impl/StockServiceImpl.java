@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.trade.domain.entity.Stock;
 import ru.tinkoff.trade.domain.repository.StockRepository;
 import ru.tinkoff.trade.invest.api.InstrumentsServiceApi;
 import ru.tinkoff.trade.invest.dto.V1InstrumentsRequest;
