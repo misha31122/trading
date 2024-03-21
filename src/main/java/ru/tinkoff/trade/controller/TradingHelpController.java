@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.tinkoff.trade.service.MACDService;
 import ru.tinkoff.trade.service.SectorsInfoService;
 import ru.tinkoff.trade.service.StockCandlesService;
 import ru.tinkoff.trade.service.StockService;
@@ -19,6 +20,7 @@ public class TradingHelpController {
   private final StockService stockService;
   private final SectorsInfoService sectorsInfoService;
   private final StockCandlesService stockCandlesService;
+  private final MACDService macdService;
 
   @Operation(
       summary = "Инциализировать таблицу stock компаниями, акции которых торгуся на Московской бирже",
@@ -30,20 +32,29 @@ public class TradingHelpController {
   }
 
   @Operation(
-          summary = "Инциализировать таблицу sectors_info секторами для компаний, акции которых торгуся на Московской бирже",
-          description = "Initial sectors_info table")
-  @PutMapping(value = "/init/sectors-info",produces = MediaType.APPLICATION_JSON_VALUE)
+      summary = "Инциализировать таблицу sectors_info секторами для компаний, акции которых торгуся на Московской бирже",
+      description = "Initial sectors_info table")
+  @PutMapping(value = "/init/sectors-info", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> initialSectorsInfoTable() {
     sectorsInfoService.getSectorsInfoDataFromFinanceMarker();
     return ResponseEntity.ok("Все ок");
   }
 
   @Operation(
-          summary = "Получить последние часовые свечи за 7 дней для компаний, акции которых торгуся на Московской бирже",
-          description = "Initial sectors_info table")
-  @PutMapping(value = "/init/hours-candles",produces = MediaType.APPLICATION_JSON_VALUE)
+      summary = "Ининциализировать часовые свечи за 2 последние недели для компаний, акции которых торгуся на Московской бирже",
+      description = "Initial sectors_info table")
+  @PutMapping(value = "/init/hours-candles", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> putSixtyHoursCandles() {
-    stockCandlesService.getHoursCandlesAndSaveToDatabase();
+    stockCandlesService.initializeHoursCandlesByLastTwoWeeksValues();
+    return ResponseEntity.ok("Все ок");
+  }
+
+  @Operation(
+      summary = "Просчитать индикатор macd для компаний, акции которых торгуся на Московской бирже",
+      description = "Calculate macd")
+  @PutMapping(value = "/calculate/macd", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<String> calculateMACD() {
+    macdService.calculateMACDForOneHourCandleMassive();
     return ResponseEntity.ok("Все ок");
   }
 

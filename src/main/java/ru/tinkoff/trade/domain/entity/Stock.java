@@ -28,21 +28,23 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Stock {
 
-    @Id
-    @GeneratedValue
-    public UUID id;
+  @Id
+  @GeneratedValue
+  public UUID id;
 
-    @Column(nullable = false)
-    private String name;
+  @Column(nullable = false)
+  private String name;
 
-    @Column(nullable = false)
-    private String figi;
+  @Column(nullable = false)
+  private String figi;
 
-    @Type(type = "jsonb")
-    @Column(name = "share_data", columnDefinition = "json", nullable = false)
-    private V1Share shareData;
+  @Type(type = "jsonb")
+  @ToString.Exclude
+  @Column(name = "share_data", columnDefinition = "json", nullable = false)
+  private V1Share shareData;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "sectors_info_id", referencedColumnName = "id")
-    private SectorsInfo sectorsInfo;
+  @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+  @ToString.Exclude
+  @JoinColumn(name = "sectors_info_id", referencedColumnName = "id")
+  private SectorsInfo sectorsInfo;
 }

@@ -1,6 +1,10 @@
 package ru.tinkoff.trade.service;
 
+import java.time.OffsetDateTime;
+
 public interface StockCandlesService {
 
-    void getHoursCandlesAndSaveToDatabase();
+    void initializeHoursCandlesByLastTwoWeeksValues();
+
+    void getHoursCandlesAndSaveToDatabase(OffsetDateTime dateFrom, OffsetDateTime dateTo);
 }
